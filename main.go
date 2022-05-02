@@ -9,7 +9,6 @@ import (
 
 func main() {
 	args := os.Args
-	println()
 	skFile2, _ := os.Open(args[2])
 	fileinfo2, _ := skFile2.Stat()
 	skBytes2 := make([]byte, fileinfo2.Size())
@@ -24,7 +23,13 @@ func main() {
 		skFile.Read(skBytes)
 		AA, bb, err := pkcs12.DecodeAll(skBytes, pass)
 		if err != nil {
-			//println("error")
+			if err.Error() == "pkcs12: decryption password incorrect" {
+
+			} else {
+				println(err.Error())
+				println(pass)
+				break
+			}
 		} else if pass != "" {
 			println(pass)
 			break
